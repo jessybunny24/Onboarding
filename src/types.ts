@@ -111,6 +111,21 @@ export interface InternDossier {
   accentColor: "cyan" | "amber";
 }
 
+export interface TeamMemberCardProps extends Partial<InternDossier> {
+  id?: string;
+  name: string;
+  role: string;
+  imageSrc: string;
+  quote: string;
+  department?: string;
+  perception?: string;
+  status?: string;
+  accentColor?: "cyan" | "amber";
+  isAnomalyActive?: boolean;
+  className?: string;
+  onSelect?: () => void;
+}
+
 /* -------------------------------------------------------------------------- */
 /* Editions & Pricing (Services) Types                                        */
 /* -------------------------------------------------------------------------- */
