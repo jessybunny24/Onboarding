@@ -183,6 +183,118 @@ export default function Features() {
             );
           })}
         </div>
+
+        {/* Playable Intern Personnel Dossiers */}
+        <div className="mt-20 pt-16 border-t border-slate-800/80">
+          <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-950/60 border border-cyan-800/40 text-cyan-400 text-xs font-mono tracking-wider uppercase">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+              <span>Shift Personnel // Cohort Roster</span>
+            </div>
+            <h3 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+              Survive With Your Fellow Interns
+            </h3>
+            <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
+              You aren&apos;t the only one left behind in the office. Collaborate, compare ticket logs, and monitor anomaly symptoms with your shift partners.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {/* Maya - Intern #04 */}
+            <div className="group relative rounded-3xl p-6 sm:p-7 bg-[#0c101d] border border-slate-800 hover:border-cyan-500/60 transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-950/40 flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+              <div className="relative w-36 h-48 sm:w-44 sm:h-56 rounded-2xl overflow-hidden bg-slate-950 shrink-0 border-2 border-cyan-500/40 group-hover:border-cyan-400 group-hover:scale-[1.02] transition-all duration-300 shadow-xl shadow-cyan-950/30">
+                <img
+                  src="/intern-girl.jpg"
+                  alt="Intern #04 Maya - Hardware & Diagnostics"
+                  className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-slate-950/80 backdrop-blur-sm border border-cyan-500/40 text-[10px] font-mono font-bold text-cyan-300">
+                  ID: #04
+                </div>
+              </div>
+
+              <div className="flex-1 space-y-3 text-center sm:text-left">
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                  <span className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wide">
+                    Maya Lin
+                  </span>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-950 border border-cyan-800/50 text-cyan-300">
+                    Hardware Specialist
+                  </span>
+                </div>
+
+                <p className="text-xs font-mono text-slate-300 italic bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+                  &quot;The supervisors vanished mid-shift... we have to handle their queue before the security monitors reboot.&quot;
+                </p>
+
+                <div className="space-y-1.5 text-xs text-slate-400">
+                  <div className="flex items-center justify-between border-b border-slate-800/60 pb-1 font-mono text-[11px]">
+                    <span className="text-slate-500">Department</span>
+                    <span className="text-slate-300">Desktop Support & Power</span>
+                  </div>
+                  <div className="flex items-center justify-between border-b border-slate-800/60 pb-1 font-mono text-[11px]">
+                    <span className="text-slate-500">Perception</span>
+                    <span className="text-emerald-400 font-bold">94% (Visual Anomalies)</span>
+                  </div>
+                  <div className="flex items-center justify-between font-mono text-[11px]">
+                    <span className="text-slate-500">Status</span>
+                    <span className="text-cyan-400 font-bold flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping inline-block" />
+                      Active On Shift
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Leo - Intern #07 */}
+            <div className="group relative rounded-3xl p-6 sm:p-7 bg-[#0c101d] border border-slate-800 hover:border-amber-500/60 transition-all duration-300 hover:shadow-2xl hover:shadow-amber-950/40 flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+              <div className="relative w-36 h-48 sm:w-44 sm:h-56 rounded-2xl overflow-hidden bg-slate-950 shrink-0 border-2 border-amber-500/40 group-hover:border-amber-400 group-hover:scale-[1.02] transition-all duration-300 shadow-xl shadow-amber-950/30">
+                <img
+                  src="/intern-boy.jpg"
+                  alt="Intern #07 Leo - Network & Systems"
+                  className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-slate-950/80 backdrop-blur-sm border border-amber-500/40 text-[10px] font-mono font-bold text-amber-300">
+                  ID: #07
+                </div>
+              </div>
+
+              <div className="flex-1 space-y-3 text-center sm:text-left">
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                  <span className="text-xs font-mono font-bold text-amber-400 uppercase tracking-wide">
+                    Leo Vance
+                  </span>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-950 border border-amber-800/50 text-amber-300">
+                    Network Analyst
+                  </span>
+                </div>
+
+                <p className="text-xs font-mono text-slate-300 italic bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+                  &quot;These printer glitches aren&apos;t normal hardware faults. An unknown device is pinging subnet 192.168.1.27.&quot;
+                </p>
+
+                <div className="space-y-1.5 text-xs text-slate-400">
+                  <div className="flex items-center justify-between border-b border-slate-800/60 pb-1 font-mono text-[11px]">
+                    <span className="text-slate-500">Department</span>
+                    <span className="text-slate-300">Infrastructure & Servers</span>
+                  </div>
+                  <div className="flex items-center justify-between border-b border-slate-800/60 pb-1 font-mono text-[11px]">
+                    <span className="text-slate-500">Perception</span>
+                    <span className="text-amber-400 font-bold">91% (Audio & Data Logs)</span>
+                  </div>
+                  <div className="flex items-center justify-between font-mono text-[11px]">
+                    <span className="text-slate-500">Status</span>
+                    <span className="text-amber-400 font-bold flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping inline-block" />
+                      Investigating Server Room
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
