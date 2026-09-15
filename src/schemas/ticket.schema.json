@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Ticket",
+  "description": "Schema for IT Helpdesk & Anomaly Tickets in TICKET #404",
+  "type": "object",
+  "required": [
+    "id",
+    "room",
+    "category",
+    "title",
+    "miniGame",
+    "normalState",
+    "anomalyState"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^#[0-9]{4}$",
+      "description": "4-digit ticket identifier (e.g. #0241)"
+    },
+    "room": {
+      "type": "string",
+      "description": "Office location or room number"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["Printer", "Network", "Hardware", "Reality"],
+      "description": "Category of maintenance task"
+    },
+    "title": {
+      "type": "string",
+      "description": "Short summary of the reported issue"
+    },
+    "miniGame": {
+      "type": "object",
+      "required": ["type", "title", "instructions"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["printer", "cables", "dial", "command"]
+        },
+        "title": {
+          "type": "string"
+        },
+        "instructions": {
+          "type": "string"
+        }
+      }
+    },
+    "normalState": {
+      "type": "object",
+      "required": ["description", "diagnostic", "metrics"],
+      "properties": {
+        "description": { "type": "string" },
+        "diagnostic": { "type": "string" },
+        "metrics": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["label", "value"],
+            "properties": {
+              "label": { "type": "string" },
+              "value": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "anomalyState": {
+      "type": "object",
+      "required": ["description", "diagnostic", "glitchWarning", "metrics"],
+      "properties": {
+        "description": { "type": "string" },
+        "diagnostic": { "type": "string" },
+        "glitchWarning": { "type": "string" },
+        "metrics": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["label", "value"],
+            "properties": {
+              "label": { "type": "string" },
+              "value": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

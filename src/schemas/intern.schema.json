@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "InternDossier",
+  "description": "Schema for IT Intern Personnel Profiles in TICKET #404",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "role",
+    "imageSrc",
+    "quote",
+    "department",
+    "perception",
+    "status",
+    "accentColor"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Intern ID badge number (e.g. #04)"
+    },
+    "name": {
+      "type": "string",
+      "description": "Full name of the intern"
+    },
+    "role": {
+      "type": "string",
+      "description": "Assigned job title / specialization"
+    },
+    "imageSrc": {
+      "type": "string",
+      "description": "Relative asset URL for portrait photo"
+    },
+    "quote": {
+      "type": "string",
+      "description": "Recorded quote from intern voice log"
+    },
+    "department": {
+      "type": "string",
+      "description": "Assigned facility department"
+    },
+    "perception": {
+      "type": "string",
+      "description": "Anomaly sensitivity rating and focus area"
+    },
+    "status": {
+      "type": "string",
+      "description": "Current shift status or location"
+    },
+    "accentColor": {
+      "type": "string",
+      "enum": ["cyan", "amber", "emerald", "rose"],
+      "description": "UI accent theme for dossier cards"
+    }
+  }
+}

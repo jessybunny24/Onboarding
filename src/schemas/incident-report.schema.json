@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "IncidentReport",
+  "description": "Schema for Anomaly Incident Report Submissions in TICKET #404",
+  "type": "object",
+  "required": ["fullName", "badgeId", "station", "incidentType", "description"],
+  "properties": {
+    "fullName": {
+      "type": "string",
+      "minLength": 2,
+      "description": "Intern or employee full name"
+    },
+    "badgeId": {
+      "type": "string",
+      "pattern": "^INT-[0-9]{4}$",
+      "description": "Employee ID formatted as INT-XXXX"
+    },
+    "station": {
+      "type": "string",
+      "description": "Location or workstation where anomaly occurred"
+    },
+    "incidentType": {
+      "type": "string",
+      "enum": [
+        "Level 1: Environmental Shift (Furniture/Objects)",
+        "Level 2: Technical/Hardware Glitch (Spooler/Network)",
+        "Level 3: Biological/Mimic Encounter",
+        "Level 4: Temporal Spatiotemporal Breakdown"
+      ],
+      "description": "Severity tier of reported anomaly"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Detailed notes on symptoms and observed reality distortions"
+    }
+  }
+}
