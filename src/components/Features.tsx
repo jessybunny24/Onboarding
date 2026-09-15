@@ -7,9 +7,10 @@ import {
   AnomalyIllustration,
   ParadoxIllustration,
 } from "./PhaseIllustrations";
+import type { FeaturePhaseItem } from "@/types";
 
 export default function Features() {
-  const features = [
+  const features: FeaturePhaseItem[] = [
     {
       id: "routine-maintenance",
       Illustration: RoutineIllustration,

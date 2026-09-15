@@ -2,11 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Menu, X, Radio, ArrowUpRight } from "lucide-react";
-
-interface HeaderProps {
-  isAnomalyActive?: boolean;
-  onToggleAnomaly?: () => void;
-}
+import type { HeaderProps } from "@/types";
 
 export default function Header({
   isAnomalyActive = false,

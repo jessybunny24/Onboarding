@@ -2,11 +2,12 @@
 
 import React, { useState } from "react";
 import { Check, ShieldCheck, Sparkles } from "lucide-react";
+import type { PricingEdition } from "@/types";
 
 export default function Services() {
   const [selectedPlan, setSelectedPlan] = useState<string>("senior");
 
-  const editions = [
+  const editions: PricingEdition[] = [
     {
       id: "intern",
       name: "Probationary Intern",

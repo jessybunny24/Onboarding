@@ -17,31 +17,12 @@ import {
   Cpu,
   FileSpreadsheet,
 } from "lucide-react";
-
-interface MiniGameDef {
-  type: "printer" | "cables" | "dial" | "command";
-  title: string;
-  instructions: string;
-}
-
-interface Ticket {
-  id: string;
-  room: string;
-  category: "Printer" | "Network" | "Hardware" | "Reality";
-  title: string;
-  miniGame: MiniGameDef;
-  normalState: {
-    description: string;
-    diagnostic: string;
-    metrics: { label: string; value: string }[];
-  };
-  anomalyState: {
-    description: string;
-    diagnostic: string;
-    glitchWarning: string;
-    metrics: { label: string; value: string }[];
-  };
-}
+import type {
+  MiniGameDef,
+  Ticket,
+  InteractiveTerminalProps,
+  TerminalActionLog,
+} from "@/types";
 
 const TICKETS: Ticket[] = [
   {
@@ -178,10 +159,6 @@ const TICKETS: Ticket[] = [
   },
 ];
 
-interface InteractiveTerminalProps {
-  isGlobalAnomaly?: boolean;
-}
-
 export default function InteractiveTerminal({
   isGlobalAnomaly = false,
 }: InteractiveTerminalProps) {
@@ -189,10 +166,7 @@ export default function InteractiveTerminal({
   const [anomalyMode, setAnomalyMode] = useState(false);
   const [playerHealth, setPlayerHealth] = useState(100);
   const [solvedStreak, setSolvedStreak] = useState(0);
-  const [lastAction, setLastAction] = useState<{
-    text: string;
-    type: "success" | "damage" | "warning";
-  } | null>(null);
+  const [lastAction, setLastAction] = useState<TerminalActionLog | null>(null);
   const [audioEnabled, setAudioEnabled] = useState(true);
 
   // Minigame active state

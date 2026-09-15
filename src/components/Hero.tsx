@@ -4,11 +4,7 @@ import React from "react";
 import { ArrowRight, Terminal as TerminalIcon } from "lucide-react";
 import InteractiveTerminal from "./InteractiveTerminal";
 import Ticket404HeroImage from "./Ticket404HeroImage";
-
-interface HeroProps {
-  isAnomalyActive: boolean;
-  onToggleAnomaly?: () => void;
-}
+import type { HeroProps } from "@/types";
 
 export default function Hero({
   isAnomalyActive,
