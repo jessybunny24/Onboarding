@@ -7,9 +7,12 @@ import {
   AnomalyIllustration,
   ParadoxIllustration,
 } from "./PhaseIllustrations";
+import type { FeaturePhaseItem } from "@/types";
+import TeamMemberCard from "./TeamMemberCard";
+import { mockInterns } from "@/mocks";
 
 export default function Features() {
-  const features = [
+  const features: FeaturePhaseItem[] = [
     {
       id: "routine-maintenance",
       Illustration: RoutineIllustration,
@@ -182,6 +185,28 @@ export default function Features() {
               </div>
             );
           })}
+        </div>
+
+        {/* Playable Intern Personnel Dossiers */}
+        <div className="mt-20 pt-16 border-t border-slate-800/80">
+          <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-950/60 border border-cyan-800/40 text-cyan-400 text-xs font-mono tracking-wider uppercase">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+              <span>Shift Personnel // Cohort Roster</span>
+            </div>
+            <h3 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+              Survive With Your Fellow Interns
+            </h3>
+            <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
+              You aren&apos;t the only one left behind in the office. Collaborate, compare ticket logs, and monitor anomaly symptoms with your shift partners.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {mockInterns.map((intern) => (
+              <TeamMemberCard key={intern.id} {...intern} />
+            ))}
+          </div>
         </div>
       </div>
     </section>

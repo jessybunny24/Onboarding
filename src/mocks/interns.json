@@ -1,0 +1,24 @@
+[
+  {
+    "id": "#04",
+    "name": "Maya Lin",
+    "role": "Hardware Specialist",
+    "imageSrc": "/intern-girl.jpg",
+    "quote": "The supervisors vanished mid-shift... we have to handle their queue before the security monitors reboot.",
+    "department": "Desktop Support & Power",
+    "perception": "94% (Visual Anomalies)",
+    "status": "Active On Shift",
+    "accentColor": "cyan"
+  },
+  {
+    "id": "#07",
+    "name": "Leo Vance",
+    "role": "Network Analyst",
+    "imageSrc": "/intern-boy.jpg",
+    "quote": "These printer glitches aren't normal hardware faults. An unknown device is pinging subnet 192.168.1.27.",
+    "department": "Infrastructure & Servers",
+    "perception": "91% (Audio & Data Logs)",
+    "status": "Investigating Server Room",
+    "accentColor": "amber"
+  }
+]

@@ -2,12 +2,47 @@
 
 import React, { useState } from "react";
 import { Send, CheckCircle2, AlertOctagon, Terminal } from "lucide-react";
+import Dropdown, { DropdownOption } from "./Dropdown";
+
+const incidentOptions: DropdownOption[] = [
+  {
+    value: "level-1-environmental",
+    label: "Level 1: Environmental Shift",
+    badge: "LOW",
+    description: "Displaced chairs, shifted clocks, room orientation changes.",
+  },
+  {
+    value: "level-2-technical",
+    label: "Level 2: Technical/Hardware Glitch",
+    badge: "MEDIUM",
+    description: "Printer photo printouts, ghost devices on subnet, rogue cursors.",
+  },
+  {
+    value: "level-3-mimic",
+    label: "Level 3: Biological/Mimic Encounter",
+    badge: "HIGH",
+    description: "Employees returning as different people, supervisor clones.",
+  },
+  {
+    value: "level-4-temporal",
+    label: "Level 4: Spatiotemporal Paradox",
+    badge: "CRITICAL",
+    description: "Tickets logged from 2011, shifting hallways, infinite loops.",
+  },
+  {
+    value: "press-inquiry",
+    label: "General Press & Publisher Inquiries",
+    badge: "EXTERNAL",
+    description: "Media requests, demo keys, and partnership queries.",
+  },
+];
 
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     location: "",
+    incidentType: "level-1-environmental",
     message: "",
   });
 
@@ -151,6 +186,19 @@ export default function Contact() {
                   className="w-full px-4 py-3.5 rounded-xl bg-[#07090e] border border-slate-800 text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                 />
               </div>
+
+              {/* Incident Type Dropdown */}
+              <Dropdown
+                id="incident-type-dropdown"
+                label="Incident / Anomaly Type"
+                options={incidentOptions}
+                value={formData.incidentType}
+                onChange={(val) =>
+                  setFormData({ ...formData, incidentType: val })
+                }
+                helperText="Select the severity classification according to facility handbook protocol."
+                required
+              />
 
               {/* Message */}
               <div className="space-y-2">

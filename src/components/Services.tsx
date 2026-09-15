@@ -2,71 +2,13 @@
 
 import React, { useState } from "react";
 import { Check, ShieldCheck, Sparkles } from "lucide-react";
+import type { PricingEdition } from "@/types";
+import { mockEditions } from "@/mocks";
 
 export default function Services() {
   const [selectedPlan, setSelectedPlan] = useState<string>("senior");
 
-  const editions = [
-    {
-      id: "intern",
-      name: "Probationary Intern",
-      badge: "DAY 1 ORIENTATION",
-      price: "₱200",
-      description:
-        "Standard dispatch clearance for your first week. Learn the floor plan, fix the hardware, and don't ask about previous interns.",
-      highlighted: false,
-      buttonText: "Wishlist Standard Edition",
-      buttonStyle:
-        "btn-secondary w-full py-3.5 px-6 rounded-2xl bg-slate-900 border border-slate-700 text-slate-200 font-semibold text-sm hover:border-slate-500 hover:text-white hover:bg-slate-800",
-      features: [
-        "7-Day Probationary Campaign (Floors 1-3)",
-        "40+ Hardware Tickets (Printers, VGA, BIOS)",
-        "Level 1 Environmental & Level 2 Technical Anomalies",
-        "Standard Multimeter, Toner Key & Flashlight",
-        "Official Digital Intern ID Card",
-      ],
-    },
-    {
-      id: "senior",
-      name: "Senior Anomaly Dispatch",
-      badge: "RECOMMENDED • SUPERVISOR APPROVED",
-      price: "₱400",
-      description:
-        "Full building clearance. Handle high-risk reality breaches across 13 floors and uncover the 2011 vanished intern archive.",
-      highlighted: true,
-      buttonText: "Pre-Order Senior Edition",
-      buttonStyle:
-        "btn-primary w-full py-4 px-6 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm shadow-xl shadow-blue-600/30 border border-blue-400/40",
-      features: [
-        "Everything in Probationary Intern tier",
-        "Full Facility Clearance: Floors 1-13 & Sub-Basement",
-        "Level 3 Human Mimics & Level 4 Reality Collapses",
-        "Unredacted Audio Logs of Vanished Interns (2011)",
-        "CRT Monitor & 90s Office Retro Filter Pack",
-        "Full Dark Ambient Synth Soundtrack (FLAC/MP3)",
-      ],
-    },
-    {
-      id: "enterprise",
-      name: "Enterprise Containment",
-      badge: "COLLECTOR'S PROTOCOL",
-      price: "₱600",
-      description:
-        "For technicians who refuse to look away. Includes endless night shift mode, classified dev commentary, and incident dossier.",
-      highlighted: false,
-      buttonText: "Access Enterprise Tier",
-      buttonStyle:
-        "btn-accent w-full py-3.5 px-6 rounded-2xl bg-red-950/60 border border-red-700/60 hover:border-red-500 text-red-200 hover:text-white hover:bg-red-900/60 font-semibold text-sm shadow-lg shadow-red-950/30",
-      features: [
-        "Everything in Senior Anomaly Dispatch",
-        "Endless 'Graveyard Shift' Rogue-lite Anomaly Mode",
-        "Classified Incident Dossier & Room 103 Blueprints (PDF)",
-        "Interactive Supervisor Terminal Soundboard DLC",
-        "Developer Commentary: The Making of the Anomalies",
-        "Your Name in the Game's 'Previous Intern' Database",
-      ],
-    },
-  ];
+  const editions: PricingEdition[] = mockEditions;
 
   return (
     <section

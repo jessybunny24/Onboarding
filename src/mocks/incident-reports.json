@@ -1,0 +1,16 @@
+[
+  {
+    "fullName": "Sarah Jenkins",
+    "badgeId": "INT-0241",
+    "station": "Accounting - Desk 4",
+    "incidentType": "Level 2: Technical/Hardware Glitch (Spooler/Network)",
+    "description": "The LaserJet 4200 printer printed 78 pages of photographs of me sitting at my desk taken from the ceiling corner, but there is no camera installed in Room 201."
+  },
+  {
+    "fullName": "Alex Chen",
+    "badgeId": "INT-0112",
+    "station": "Server Rack B2",
+    "incidentType": "Level 2: Technical/Hardware Glitch (Spooler/Network)",
+    "description": "An unknown MAC address matching my own laptop hardware ID began executing keystrokes on my terminal while my hands were off the keyboard."
+  }
+]

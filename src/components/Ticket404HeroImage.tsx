@@ -3,10 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { Volume2, VolumeX, Sparkles, Radio, Eye } from "lucide-react";
-
-interface Ticket404HeroImageProps {
-  onGlitchTriggered?: () => void;
-}
+import type { Ticket404HeroImageProps } from "@/types";
 
 export default function Ticket404HeroImage({
   onGlitchTriggered,

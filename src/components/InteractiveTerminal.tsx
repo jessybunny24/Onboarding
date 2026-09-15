@@ -17,170 +17,15 @@ import {
   Cpu,
   FileSpreadsheet,
 } from "lucide-react";
+import type {
+  MiniGameDef,
+  Ticket,
+  InteractiveTerminalProps,
+  TerminalActionLog,
+} from "@/types";
+import { mockTickets } from "@/mocks";
 
-interface MiniGameDef {
-  type: "printer" | "cables" | "dial" | "command";
-  title: string;
-  instructions: string;
-}
-
-interface Ticket {
-  id: string;
-  room: string;
-  category: "Printer" | "Network" | "Hardware" | "Reality";
-  title: string;
-  miniGame: MiniGameDef;
-  normalState: {
-    description: string;
-    diagnostic: string;
-    metrics: { label: string; value: string }[];
-  };
-  anomalyState: {
-    description: string;
-    diagnostic: string;
-    glitchWarning: string;
-    metrics: { label: string; value: string }[];
-  };
-}
-
-const TICKETS: Ticket[] = [
-  {
-    id: "#0241",
-    room: "Accounting (Room 201)",
-    category: "Printer",
-    title: "LaserJet Spooler Failure & Jam",
-    miniGame: {
-      type: "printer",
-      title: "Tray #2 Roller Jam Clearing",
-      instructions: "Click [PULL JAMMED SHEET] 3 times to clear the roller.",
-    },
-    normalState: {
-      description:
-        "Replace toner cartridge and verify paper tray #2 is seated correctly. Clear standard 80gsm paper stoppage.",
-      diagnostic: "HP LaserJet 4200: SPOOLER_IDLE. 1 job queued. Roller sensor: STALLED.",
-      metrics: [
-        { label: "Spooler Status", value: "READY" },
-        { label: "Paper Tray", value: "98% Capacity" },
-        { label: "Queued By", value: "Sarah (Payroll)" },
-      ],
-    },
-    anomalyState: {
-      description:
-        "It printed a document you never sent. Every page is a live photograph of you standing at this exact terminal. Tomorrow's date is watermarked on the header.",
-      diagnostic:
-        "WARNING: Spooler says 'PRINTING: 1/1' but has output 78 continuous pages. Header text: 'DON'T FIX THIS PRINTER'.",
-      glitchWarning: "ANOMALY LEVEL 2: Physical feedback loop detected in Room 201.",
-      metrics: [
-        { label: "Spooler Status", value: "LOOPING (78/1)" },
-        { label: "Paper Tray", value: "OUTPUTS BLOOD/INK" },
-        { label: "Queued By", value: "EMPLOYEE DOES NOT EXIST" },
-      ],
-    },
-  },
-  {
-    id: "#0112",
-    room: "Server Room / LAN Rack",
-    category: "Network",
-    title: "Subnet Patch Cable Disconnect",
-    miniGame: {
-      type: "cables",
-      title: "Patch RJ45 Ethernet Channels",
-      instructions: "Connect all 3 color-coded network patch cords to their ports.",
-    },
-    normalState: {
-      description:
-        "Trace loose Cat6 patch cables and seat RJ45 connectors into Switch Port 01, 02, and 03.",
-      diagnostic: "Gateway: 192.168.1.1 [OK] | DNS: 1.1.1.1 [OK] | Ports: 3 Unlinked.",
-      metrics: [
-        { label: "Gateway", value: "192.168.1.1" },
-        { label: "Active Host", value: "IT-INTERN-01" },
-        { label: "Packet Loss", value: "0.0%" },
-      ],
-    },
-    anomalyState: {
-      description:
-        "Network diagnostic shows unknown device 192.168.1.27 named IT-INTERN-02. While looking at it, IT-INTERN-03 appears. Cursor moves across your screen autonomously.",
-      diagnostic:
-        "CRITICAL: Host IT-INTERN-02 has remote desktop handle on your mouse cursor. Webcams active across empty floors.",
-      glitchWarning: "ANOMALY LEVEL 2: Duplicate intern entities pinging localhost.",
-      metrics: [
-        { label: "Unknown Host", value: "IT-INTERN-02 (ONLINE)" },
-        { label: "MAC Address", value: "YOUR HARDWARE ID" },
-        { label: "Webcam Light", value: "ACTIVE [UNAUTHORIZED]" },
-      ],
-    },
-  },
-  {
-    id: "#0084",
-    room: "Conference Hall B",
-    category: "Hardware",
-    title: "Projector VGA Signal Calibration",
-    miniGame: {
-      type: "dial",
-      title: "Multimeter Signal Frequency Tune",
-      instructions: "Slide dial to 60.0 Hz to sync the projector signal.",
-    },
-    normalState: {
-      description:
-        "Check projector VGA connection and calibrate frequency to 60.0 Hz for morning executive briefing.",
-      diagnostic: "Hardware Inventory: 4 Desks, 4 Chairs, 1 Projector registered. Frequency: 42.1 Hz.",
-      metrics: [
-        { label: "Desks", value: "4 Verified" },
-        { label: "Chairs", value: "4 Verified" },
-        { label: "Projector Signal", value: "OUT OF SYNC" },
-      ],
-    },
-    anomalyState: {
-      description:
-        "You count the chairs: 4 desks, 5 chairs. There was never a fifth chair. If you look away and look back, the fifth chair is slightly pulled out and warm.",
-      diagnostic:
-        "CCTV MONITOR: Feed shows the room you are currently in, but the person on screen is 4 seconds ahead of your movements.",
-      glitchWarning: "ANOMALY LEVEL 1: Unregistered environmental mass occupying space.",
-      metrics: [
-        { label: "Chair Count", value: "5 [EXCESS +1]" },
-        { label: "Occupancy", value: "SHADOW DETECTED" },
-        { label: "CCTV Lag", value: "+4.2s (FUTURE FEED)" },
-      ],
-    },
-  },
-  {
-    id: "#0068",
-    room: "Room 103 (Non-existent)",
-    category: "Reality",
-    title: "Ticket #068: Fix You",
-    miniGame: {
-      type: "command",
-      title: "Emergency BIOS Terminal Override",
-      instructions: "Execute the override terminal command to reboot safety protocols.",
-    },
-    normalState: {
-      description:
-        "System log maintenance routine: Run standard intern orientation BIOS health check.",
-      diagnostic: "ARCHIVE STATUS: Standard onboarding diagnostic check ready for execution.",
-      metrics: [
-        { label: "Assigned To", value: "Intern #01" },
-        { label: "Priority", value: "Routine" },
-        { label: "Resolution", value: "Pending Check" },
-      ],
-    },
-    anomalyState: {
-      description:
-        "Ticket reads: 'Fix You. Location: Room 103. Assigned to: IT Department.' The floor plan shows no Room 103. The Complete button pulses with audio static.",
-      diagnostic:
-        "RECORD CORRUPT: Created 12/04/2011 by [REDACTED BOSS]. This ticket was logged from the computer you are touching right now.",
-      glitchWarning: "ANOMALY LEVEL 4: Spatiotemporal breach. Hallway length extending.",
-      metrics: [
-        { label: "Subject", value: "YOU" },
-        { label: "Assigned By", value: "SUPERVISOR (MISSING)" },
-        { label: "Action", value: "DO NOT REPAIR" },
-      ],
-    },
-  },
-];
-
-interface InteractiveTerminalProps {
-  isGlobalAnomaly?: boolean;
-}
+const TICKETS: Ticket[] = mockTickets;
 
 export default function InteractiveTerminal({
   isGlobalAnomaly = false,
@@ -189,10 +34,7 @@ export default function InteractiveTerminal({
   const [anomalyMode, setAnomalyMode] = useState(false);
   const [playerHealth, setPlayerHealth] = useState(100);
   const [solvedStreak, setSolvedStreak] = useState(0);
-  const [lastAction, setLastAction] = useState<{
-    text: string;
-    type: "success" | "damage" | "warning";
-  } | null>(null);
+  const [lastAction, setLastAction] = useState<TerminalActionLog | null>(null);
   const [audioEnabled, setAudioEnabled] = useState(true);
 
   // Minigame active state

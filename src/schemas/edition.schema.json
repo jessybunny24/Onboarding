@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PricingEdition",
+  "description": "Schema for Steam Store Editions & Pricing Packages in TICKET #404",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "badge",
+    "price",
+    "description",
+    "highlighted",
+    "buttonText",
+    "buttonStyle",
+    "features"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Package slug (e.g. intern, senior, enterprise)"
+    },
+    "name": {
+      "type": "string",
+      "description": "Display name of the edition"
+    },
+    "badge": {
+      "type": "string",
+      "description": "Ribbon or tag line displayed on the card"
+    },
+    "price": {
+      "type": "string",
+      "description": "Formatted price string (e.g. ₱400)"
+    },
+    "description": {
+      "type": "string",
+      "description": "Summary of package value and clearance"
+    },
+    "highlighted": {
+      "type": "boolean",
+      "description": "Whether this edition is featured with prominent glowing styles"
+    },
+    "buttonText": {
+      "type": "string",
+      "description": "Call to action label"
+    },
+    "buttonStyle": {
+      "type": "string",
+      "description": "CSS class string for action button"
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Included perks and content bullet points"
+    }
+  }
+}
