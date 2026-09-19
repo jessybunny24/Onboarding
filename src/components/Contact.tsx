@@ -49,11 +49,21 @@ export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [ticketNumber, setTicketNumber] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const randomTicket = `#404-${Math.floor(1000 + Math.random() * 9000)}`;
     setTicketNumber(randomTicket);
     setSubmitted(true);
+
+    try {
+      await fetch("/api/incident", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+    } catch (err) {
+      console.error("Failed to persist incident report to database:", err);
+    }
   };
 
   return (
@@ -115,7 +125,7 @@ export default function Contact() {
                 type="button"
                 onClick={() => {
                   setSubmitted(false);
-                  setFormData({ name: "", email: "", location: "", message: "" });
+                  setFormData({ name: "", email: "", location: "", incidentType: "", message: "" });
                 }}
                 className="btn-secondary px-6 py-2.5 rounded-xl border border-slate-700 text-xs font-medium text-slate-300 hover:text-white"
               >
