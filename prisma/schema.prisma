@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model AnomalyProgress {
+  id                String   @id @default("default-session")
+  isAnomalyActive   Boolean  @default(false)
+  activeTicketIndex Int      @default(0)
+  anomalyMode       Boolean  @default(false)
+  playerHealth      Int      @default(100)
+  solvedStreak      Int      @default(0)
+  printerPulls      Int      @default(0)
+  cablesConnected   Int[]    @default([])
+  sliderValue       Int      @default(40)
+  updatedAt         DateTime @updatedAt
+  createdAt         DateTime @default(now())
+}
+
+model IncidentReport {
+  id           String   @id @default(uuid())
+  name         String
+  email        String
+  location     String
+  incidentType String
+  message      String
+  createdAt    DateTime @default(now())
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Features from "@/components/Features";
@@ -10,9 +10,51 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   const [isAnomalyActive, setIsAnomalyActive] = useState(false);
+  const [isDbLoaded, setIsDbLoaded] = useState(false);
+
+  // Fetch saved anomaly progress from PostgreSQL on initial load
+  useEffect(() => {
+    async function loadProgress() {
+      try {
+        const res = await fetch("/api/progress");
+        if (res.ok) {
+          const json = await res.json();
+          if (json?.data && typeof json.data.isAnomalyActive === "boolean") {
+            setIsAnomalyActive(json.data.isAnomalyActive);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load progress from PostgreSQL:", err);
+      } finally {
+        setIsDbLoaded(true);
+      }
+    }
+    loadProgress();
+  }, []);
+
+  const saveAnomalyState = useCallback(async (active: boolean) => {
+    try {
+      await fetch("/api/progress", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isAnomalyActive: active }),
+      });
+    } catch (err) {
+      console.error("Failed to persist anomaly state to PostgreSQL:", err);
+    }
+  }, []);
 
   const toggleAnomaly = () => {
-    setIsAnomalyActive((prev) => !prev);
+    setIsAnomalyActive((prev) => {
+      const nextState = !prev;
+      saveAnomalyState(nextState);
+      return nextState;
+    });
+  };
+
+  const dismissAnomaly = () => {
+    setIsAnomalyActive(false);
+    saveAnomalyState(false);
   };
 
   return (
@@ -26,7 +68,7 @@ export default function Home() {
         <div className="fixed top-0 left-0 right-0 z-50 bg-red-600 text-white text-[11px] font-mono font-bold tracking-widest text-center py-1 uppercase px-4 shadow-lg shadow-red-950 flex items-center justify-center gap-2 animate-pulse">
           <span>[!] FACILITY PROTOCOL BREACH: ANOMALOUS DEVICE DETECTED ON SUBNET 192.168.1.27 [!]</span>
           <button
-            onClick={() => setIsAnomalyActive(false)}
+            onClick={dismissAnomaly}
             className="underline ml-2 hover:text-red-200 cursor-pointer"
           >
             [DISMISS]
@@ -54,7 +96,7 @@ export default function Home() {
         {/* Services: Custom Cards with Highlight Buttons */}
         <Services />
 
-        {/* Contact: Non-functional Form */}
+        {/* Contact: Support and Incident Ticket Submission */}
         <Contact />
       </main>
 
