@@ -16,7 +16,6 @@ import {
   Zap,
   Cpu,
   FileSpreadsheet,
-  Database,
 } from "lucide-react";
 import type {
   MiniGameDef,
@@ -37,7 +36,6 @@ export default function InteractiveTerminal({
   const [solvedStreak, setSolvedStreak] = useState(0);
   const [lastAction, setLastAction] = useState<TerminalActionLog | null>(null);
   const [audioEnabled, setAudioEnabled] = useState(true);
-  const [isSynced, setIsSynced] = useState(false);
 
   // Minigame active state
   const [activeMiniGame, setActiveMiniGame] = useState<MiniGameDef | null>(null);
@@ -45,45 +43,6 @@ export default function InteractiveTerminal({
   const [cablesConnected, setCablesConnected] = useState<number[]>([]);
   const [sliderValue, setSliderValue] = useState(40);
   const [commandInput, setCommandInput] = useState("");
-
-  // Load progress from PostgreSQL on mount
-  useEffect(() => {
-    async function loadProgress() {
-      try {
-        const res = await fetch("/api/progress");
-        if (res.ok) {
-          const json = await res.json();
-          if (json?.data) {
-            const d = json.data;
-            if (typeof d.activeTicketIndex === "number") setActiveTicketIndex(d.activeTicketIndex);
-            if (typeof d.anomalyMode === "boolean") setAnomalyMode(d.anomalyMode);
-            if (typeof d.playerHealth === "number") setPlayerHealth(d.playerHealth);
-            if (typeof d.solvedStreak === "number") setSolvedStreak(d.solvedStreak);
-            if (typeof d.printerPulls === "number") setPrinterPulls(d.printerPulls);
-            if (Array.isArray(d.cablesConnected)) setCablesConnected(d.cablesConnected);
-            if (typeof d.sliderValue === "number") setSliderValue(d.sliderValue);
-            setIsSynced(true);
-          }
-        }
-      } catch (err) {
-        console.error("Failed to load terminal progress from PostgreSQL:", err);
-      }
-    }
-    loadProgress();
-  }, []);
-
-  const syncToDb = useCallback(async (updates: Record<string, unknown>) => {
-    try {
-      await fetch("/api/progress", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updates),
-      });
-      setIsSynced(true);
-    } catch (err) {
-      console.error("Failed to sync progress to PostgreSQL:", err);
-    }
-  }, []);
 
   const effectiveAnomaly = isGlobalAnomaly || anomalyMode;
   const currentTicket = TICKETS[activeTicketIndex];
@@ -181,7 +140,6 @@ export default function InteractiveTerminal({
       playSfx("success");
       const nextStreak = solvedStreak + 1;
       setSolvedStreak(nextStreak);
-      syncToDb({ solvedStreak: nextStreak });
       setLastAction({
         type: "success",
         text: "✓ ANOMALY IDENTIFIED & QUARANTINED! Sanity Protected. (Damage Blocked: 0 DMG | +1 Incident Resolved)",
@@ -192,7 +150,6 @@ export default function InteractiveTerminal({
       const nextHealth = Math.max(0, playerHealth - 15);
       setPlayerHealth(nextHealth);
       setSolvedStreak(0);
-      syncToDb({ playerHealth: nextHealth, solvedStreak: 0 });
       setLastAction({
         type: "damage",
         text: "⚠ FALSE ALARM! You reported harmless office equipment as an anomaly. Supervisor strike issued (-15% Sanity).",
@@ -210,7 +167,6 @@ export default function InteractiveTerminal({
       const nextHealth = Math.max(0, playerHealth - 25);
       setPlayerHealth(nextHealth);
       setSolvedStreak(0);
-      syncToDb({ playerHealth: nextHealth, solvedStreak: 0 });
       setLastAction({
         type: "damage",
         text: "☠ SANITY BREACH: You attempted to physically repair an anomaly! Reality slipped and shocked your intern entity (-25% Sanity).",
@@ -228,7 +184,6 @@ export default function InteractiveTerminal({
     setActiveMiniGame(null);
     const nextStreak = solvedStreak + 1;
     setSolvedStreak(nextStreak);
-    syncToDb({ solvedStreak: nextStreak });
     setLastAction({
       type: "success",
       text: `✓ TASK COMPLETED: ${currentTicket.miniGame.title} resolved successfully! Ticket closed.`,
@@ -240,7 +195,6 @@ export default function InteractiveTerminal({
     playSfx("success");
     setPlayerHealth(100);
     setSolvedStreak(0);
-    syncToDb({ playerHealth: 100, solvedStreak: 0 });
     setLastAction(null);
   };
 
@@ -276,14 +230,6 @@ export default function InteractiveTerminal({
 
           {/* Intern Sanity / Health Bar & Anomaly Simulator */}
           <div className="flex items-center gap-4">
-            {/* Database Sync Badge */}
-            {isSynced && (
-              <div className="hidden md:flex items-center gap-1.5 text-[10px] font-mono text-emerald-400 bg-emerald-950/70 px-2 py-0.5 rounded-md border border-emerald-800/50">
-                <Database className="w-3 h-3" />
-                <span>POSTGRES SYNCED</span>
-              </div>
-            )}
-
             {/* Sanity Meter */}
             <div className="flex items-center gap-2 bg-slate-950/90 border border-slate-800 px-3 py-1 rounded-xl">
               <Heart
@@ -349,9 +295,7 @@ export default function InteractiveTerminal({
             <button
               type="button"
               onClick={() => {
-                const nextMode = !anomalyMode;
-                setAnomalyMode(nextMode);
-                syncToDb({ anomalyMode: nextMode });
+                setAnomalyMode(!anomalyMode);
                 setLastAction(null);
                 resetMiniGame();
                 playSfx("glitch");
@@ -382,7 +326,6 @@ export default function InteractiveTerminal({
                 key={ticket.id}
                 onClick={() => {
                   setActiveTicketIndex(index);
-                  syncToDb({ activeTicketIndex: index });
                   setLastAction(null);
                   resetMiniGame();
                   playSfx("click");

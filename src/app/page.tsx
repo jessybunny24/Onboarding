@@ -10,51 +10,13 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   const [isAnomalyActive, setIsAnomalyActive] = useState(false);
-  const [isDbLoaded, setIsDbLoaded] = useState(false);
-
-  // Fetch saved anomaly progress from PostgreSQL on initial load
-  useEffect(() => {
-    async function loadProgress() {
-      try {
-        const res = await fetch("/api/progress");
-        if (res.ok) {
-          const json = await res.json();
-          if (json?.data && typeof json.data.isAnomalyActive === "boolean") {
-            setIsAnomalyActive(json.data.isAnomalyActive);
-          }
-        }
-      } catch (err) {
-        console.error("Failed to load progress from PostgreSQL:", err);
-      } finally {
-        setIsDbLoaded(true);
-      }
-    }
-    loadProgress();
-  }, []);
-
-  const saveAnomalyState = useCallback(async (active: boolean) => {
-    try {
-      await fetch("/api/progress", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ isAnomalyActive: active }),
-      });
-    } catch (err) {
-      console.error("Failed to persist anomaly state to PostgreSQL:", err);
-    }
-  }, []);
 
   const toggleAnomaly = () => {
-    setIsAnomalyActive((prev) => {
-      const nextState = !prev;
-      saveAnomalyState(nextState);
-      return nextState;
-    });
+    setIsAnomalyActive((prev) => !prev);
   };
 
   const dismissAnomaly = () => {
     setIsAnomalyActive(false);
-    saveAnomalyState(false);
   };
 
   return (
