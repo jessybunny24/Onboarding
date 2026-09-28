@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { Send, CheckCircle2, AlertOctagon, Terminal } from "lucide-react";
+import Link from "next/link";
+import { Send, CheckCircle2, AlertOctagon, Terminal, ArrowUpRight } from "lucide-react";
 import Dropdown, { DropdownOption } from "./Dropdown";
 
 const incidentOptions: DropdownOption[] = [
@@ -48,21 +49,40 @@ export default function Contact() {
 
   const [submitted, setSubmitted] = useState(false);
   const [ticketNumber, setTicketNumber] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const randomTicket = `#404-${Math.floor(1000 + Math.random() * 9000)}`;
-    setTicketNumber(randomTicket);
-    setSubmitted(true);
+    setIsSubmitting(true);
+    setErrorMessage(null);
 
     try {
-      await fetch("/api/incident", {
+      const response = await fetch("/api/tickets", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(formData),
       });
-    } catch (err) {
-      console.error("Failed to persist incident report to database:", err);
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || "Failed to submit ticket.");
+      }
+
+      setTicketNumber(
+        data.ticket?.ticketNumber || `#404-${Math.floor(1000 + Math.random() * 9000)}`
+      );
+      setSubmitted(true);
+    } catch (err: unknown) {
+      console.error("Failed to submit ticket:", err);
+      const message =
+        err instanceof Error ? err.message : "Failed to log ticket. Please try again.";
+      setErrorMessage(message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -121,16 +141,33 @@ export default function Contact() {
                 </p>
               </div>
 
-              <button
-                type="button"
-                onClick={() => {
-                  setSubmitted(false);
-                  setFormData({ name: "", email: "", location: "", incidentType: "", message: "" });
-                }}
-                className="btn-secondary px-6 py-2.5 rounded-xl border border-slate-700 text-xs font-medium text-slate-300 hover:text-white"
-              >
-                File Another Request
-              </button>
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSubmitted(false);
+                    setFormData({
+                      name: "",
+                      email: "",
+                      location: "",
+                      incidentType: "level-1-environmental",
+                      message: "",
+                    });
+                    setErrorMessage(null);
+                  }}
+                  className="btn-secondary px-6 py-2.5 rounded-xl border border-slate-700 text-xs font-medium text-slate-300 hover:text-white cursor-pointer"
+                >
+                  File Another Request
+                </button>
+
+                <Link
+                  href="/admin"
+                  className="px-6 py-2.5 rounded-xl bg-cyan-950 border border-cyan-800 text-cyan-300 hover:text-white hover:border-cyan-500 text-xs font-mono font-medium flex items-center gap-1.5 transition-colors"
+                >
+                  <span>View in Admin Console</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -231,6 +268,13 @@ export default function Contact() {
                 />
               </div>
 
+              {errorMessage && (
+                <div className="p-4 rounded-xl bg-red-950/60 border border-red-800/60 text-red-300 text-xs font-mono flex items-center gap-3">
+                  <AlertOctagon className="w-4 h-4 text-red-400 shrink-0" />
+                  <span>{errorMessage}</span>
+                </div>
+              )}
+
               {/* Notice & Submit Button */}
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-2 text-xs text-slate-400">
@@ -240,10 +284,20 @@ export default function Contact() {
 
                 <button
                   type="submit"
-                  className="btn-primary w-full sm:w-auto px-8 py-4 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-xl shadow-blue-600/30"
+                  disabled={isSubmitting}
+                  className="btn-primary w-full sm:w-auto px-8 py-4 rounded-2xl bg-blue-600 hover:bg-blue-500 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold text-sm flex items-center justify-center gap-2 shadow-xl shadow-blue-600/30 transition-all"
                 >
-                  <Send className="w-4 h-4" />
-                  <span>Submit Ticket</span>
+                  {isSubmitting ? (
+                    <>
+                      <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <span>Logging Ticket...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      <span>Submit Ticket</span>
+                    </>
+                  )}
                 </button>
               </div>
             </form>

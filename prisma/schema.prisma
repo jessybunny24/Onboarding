@@ -1,12 +1,30 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
+model SupportTicket {
+  id           String   @id @default(cuid())
+  ticketNumber String   @unique
+  name         String
+  email        String
+  location     String?
+  incidentType String
+  message      String
+  status       String   @default("RECEIVED")
+  adminNotes   String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("support_tickets")
+}
 
 model IncidentReport {
   id           String   @id @default(uuid())
@@ -16,4 +34,6 @@ model IncidentReport {
   incidentType String
   message      String
   createdAt    DateTime @default(now())
+
+  @@map("incident_reports")
 }

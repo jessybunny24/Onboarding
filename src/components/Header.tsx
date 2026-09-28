@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Menu, X, Radio, ArrowUpRight } from "lucide-react";
+import Link from "next/link";
+import { Menu, X, Radio, ArrowUpRight, Terminal } from "lucide-react";
 import type { HeaderProps } from "@/types";
 
 export default function Header({
@@ -24,6 +25,7 @@ export default function Header({
     { label: "Features", href: "#features" },
     { label: "Pricing", href: "#pricing" },
     { label: "Contact", href: "#contact" },
+    { label: "Admin Portal", href: "/admin" },
   ];
 
   return (
@@ -118,6 +120,16 @@ export default function Header({
               <span>{isAnomalyActive ? "Anomaly Mode: ON" : "Status: Nominal"}</span>
             </button>
           )}
+
+          {/* Admin Console Link */}
+          <Link
+            href="/admin"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-900/90 border border-cyan-800/60 text-cyan-300 hover:text-white hover:border-cyan-400 font-mono text-xs transition-all shadow-sm shadow-cyan-950/40"
+            title="Open Facility Admin Portal"
+          >
+            <Terminal className="w-3.5 h-3.5 text-cyan-400" />
+            <span>Admin</span>
+          </Link>
 
           {/* Primary CTA Button */}
           <a

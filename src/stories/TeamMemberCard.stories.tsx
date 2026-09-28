@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import TeamMemberCard from "@/components/TeamMemberCard";
 import { mockInterns } from "@/mocks";
 
@@ -48,7 +48,6 @@ export const LeoNetworkAnalyst: Story = {
 };
 
 export const AnomalyBreachMode: Story = {
-  name: "Anomaly Breach Mode",
   args: {
     ...mockInterns[0],
     isAnomalyActive: true,
